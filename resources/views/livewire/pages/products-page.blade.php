@@ -1,0 +1,185 @@
+<div class="space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+    @if ($pendingDeleteId)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 px-4 backdrop-blur-sm">
+            <div class="w-full max-w-md rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-100 text-rose-700">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-slate-950">Hapus Produk?</h3>
+                        <p class="mt-2 text-sm leading-6 text-slate-600">
+                            Produk <span class="font-semibold text-slate-900">{{ $pendingDeleteName }}</span> akan dihapus permanen jika tidak memiliki histori transaksi dan stok aktif.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button wire:click="cancelDelete" type="button" class="btn btn-secondary">Batal</button>
+                    <button wire:click="delete" type="button" class="btn btn-danger">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <section class="hero-surface">
+        <div class="relative z-10 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+            <div class="max-w-2xl">
+                <p class="text-xs uppercase tracking-[0.32em] text-slate-400">Catalog & Inventory</p>
+                <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Daftar Produk & Stok Batik</h1>
+                <p class="mt-3 max-w-xl text-sm leading-6 text-slate-500">Tampilan dibuat lebih fokus untuk membaca produk, stok aktual, dan best seller tanpa distraksi berlebih. Cocok untuk pengecekan cepat dari desktop maupun mobile.</p>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2 xl:min-w-[28rem]">
+                <div class="rounded-[24px] border border-white/80 bg-white/80 px-5 py-4">
+                    <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Produk per halaman</p>
+                    <p class="mt-2 text-2xl font-semibold text-slate-950">{{ $products->count() }}</p>
+                </div>
+                <div class="rounded-[24px] border border-white/80 bg-white/80 px-5 py-4">
+                    <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Urutan aktif</p>
+                    <p class="mt-2 text-2xl font-semibold text-slate-950">{{ $sortBy === 'best_seller' ? 'Best Seller + Abjad' : 'A-Z' }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="panel">
+        <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-900">Filter Produk</h2>
+                <p class="mt-1 text-sm text-slate-500">Cari cepat berdasarkan nama, kode, tipe, atau prioritaskan produk best seller.</p>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama atau kode..." class="input min-w-64" />
+                <select wire:model.live="filterType" class="input min-w-40">
+                    <option value="all">Semua tipe</option>
+                    <option value="baju">Baju</option>
+                    <option value="kain">Kain</option>
+                </select>
+                <select wire:model.live="sortBy" class="input min-w-44">
+                    <option value="alphabet">Urut Abjad A-Z</option>
+                    <option value="best_seller">Best Seller + Abjad</option>
+                </select>
+                @if ($canManageInventory)
+                <a wire:navigate href="{{ route('products.import') }}" class="btn btn-secondary whitespace-nowrap">Import Spreadsheet</a>
+                <a wire:navigate href="{{ route('products.create') }}" class="btn btn-primary whitespace-nowrap">Tambah Produk</a>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    @if (session('status'))
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    @if (! auth()->check())
+        <div class="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+            Halaman produk ini terbuka untuk umum sebagai katalog stok. Untuk mengelola best seller, edit, hapus, atau import data, silakan masuk dengan akun yang punya akses.
+        </div>
+    @elseif (! $canManageInventory)
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Akun viewer hanya bisa melihat daftar produk dan stok. Penandaan best seller, edit, dan hapus hanya tersedia untuk Admin atau Kasir.
+        </div>
+    @endif
+
+    <div class="panel">
+        <div class="mb-5 flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-900">Daftar Produk</h2>
+                <p class="text-sm text-slate-500">{{ $products->count() }} produk dimuat pada halaman ini dengan urutan {{ $sortBy === 'best_seller' ? 'best seller lalu abjad' : 'abjad' }}.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            @forelse ($products as $product)
+                <div @class([
+                    'soft-card relative flex h-full flex-col overflow-hidden transition duration-200',
+                    'border-[#d6c3b4] bg-[linear-gradient(180deg,rgba(255,251,247,0.98),rgba(250,244,238,0.94))] shadow-[0_20px_55px_-34px_rgba(111,85,63,0.18)]' => $product->best_seller,
+                ])>
+                    <div class="flex flex-1 flex-col gap-4">
+                        <div class="flex min-h-6 justify-end">
+                            @if ($product->best_seller)
+                                <div class="rounded-full bg-[#f3e6db] px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[#8b5e3c]">
+                                    Best Seller
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            @if ($product->image)
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-20 w-20 rounded-3xl object-cover shadow-[0_16px_30px_-24px_rgba(15,23,42,0.45)]" />
+                            @else
+                                <div @class([
+                                    'flex h-20 w-20 flex-col items-center justify-center rounded-3xl border text-center',
+                                    'border-slate-200 bg-[linear-gradient(180deg,#f8fafc,#eef2f7)] text-slate-500' => ! $product->best_seller,
+                                    'border-[#d8c2b3] bg-[linear-gradient(180deg,#fbf4ee,#f3e8df)] text-[#7a5a45]' => $product->best_seller,
+                                ])>
+                                    <svg class="h-6 w-6 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M4 16.5V7.8A1.8 1.8 0 0 1 5.8 6h12.4A1.8 1.8 0 0 1 20 7.8v8.4M4 16.5l3.5-3.5a2 2 0 0 1 2.8 0l1.7 1.7m8-2.2-2-2a2 2 0 0 0-2.8 0l-3.2 3.2m-8 2.8h16M9 10h.01" />
+                                    </svg>
+                                    <span class="mt-1 text-[0.6rem] font-medium uppercase tracking-[0.18em] opacity-75">No Image</span>
+                                </div>
+                            @endif
+
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3 @class([
+                                        'text-lg font-semibold',
+                                        'text-slate-950' => ! $product->best_seller,
+                                        'text-[#5d4638] tracking-[-0.01em]' => $product->best_seller,
+                                    ])>{{ $product->name }}</h3>
+                                    <span class="badge">{{ ucfirst($product->type) }}</span>
+                                </div>
+                                <p class="mt-1 text-sm text-slate-500">{{ $product->code }} • Rp {{ number_format((float) $product->price, 0, ',', '.') }}</p>
+                                <p class="mt-2 text-sm text-slate-500">{{ \Illuminate\Support\Str::limit($product->description, 120) }}</p>
+                                <div @class([
+                                    'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium',
+                                    'bg-slate-100 text-slate-700' => ! $product->best_seller,
+                                    'bg-[#efe2d6] text-[#7b573f]' => $product->best_seller,
+                                ])>
+                                    Total stok: {{ (int) $product->stocks_sum_stock }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto border-t border-slate-100/90 pt-4">
+                            <p class="mb-3 text-sm font-medium text-slate-700">Stok per ukuran</p>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($product->stocks as $stock)
+                                    <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-700">
+                                        {{ $stock->size }}: <strong>{{ $stock->stock }}</strong>
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        @if ($canManageInventory)
+                            <div class="flex flex-wrap gap-2 border-t border-slate-100/90 pt-4">
+                                <button wire:click="toggleBestSeller({{ $product->id }})" type="button" class="btn btn-secondary w-full justify-center sm:w-auto">
+                                    {{ $product->best_seller ? 'Unmark Best Seller' : 'Mark Best Seller' }}
+                                </button>
+                                <a wire:navigate href="{{ route('products.edit', $product) }}" class="btn btn-secondary w-full justify-center sm:w-auto">Edit</a>
+                                <button wire:click="confirmDelete({{ $product->id }})" type="button" class="btn btn-danger w-full justify-center sm:w-auto">Hapus</button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full rounded-3xl border border-dashed border-slate-300 px-6 py-14 text-center text-slate-500">
+                    Belum ada produk yang cocok dengan filter saat ini.
+                </div>
+            @endforelse
+        </div>
+
+        @if ($products->hasPages())
+            <div class="mt-6 flex justify-center border-t border-slate-100/90 pt-5">
+                {{ $products->links() }}
+            </div>
+        @endif
+    </div>
+</div>

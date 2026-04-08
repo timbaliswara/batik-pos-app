@@ -1,58 +1,180 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Baliswara Batik POS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi inventory dan stok batik berbasis Laravel + Livewire untuk membantu pengelolaan produk, stok masuk, stok keluar, stock opname, dan laporan secara lebih rapi.
 
-## About Laravel
+## Ringkasan
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Project ini dibuat untuk kebutuhan operasional brand batik Baliswara dengan fokus pada:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- katalog produk dan stok yang mudah dipantau
+- transaksi stok masuk dan stok keluar
+- penandaan produk best seller
+- import produk dan stok dari spreadsheet
+- akses publik untuk halaman produk
+- role user untuk admin, kasir, dan viewer
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fitur Utama
 
-## Learning Laravel
+- Dashboard monitoring produk dan aktivitas stok
+- Halaman produk publik dengan pencarian, sorting, pagination, dan penanda best seller
+- CRUD produk batik dengan upload gambar
+- Import produk dan stok dari file `.xlsx`, `.xls`, atau `.csv`
+- Transaksi stok masuk batch dalam satu kali simpan
+- Transaksi stok keluar batch dalam satu kali simpan
+- Auto search produk pada halaman stok masuk dan stok keluar
+- Produk stok `0` tetap tampil di pencarian stok keluar tetapi tidak bisa dipilih
+- Laporan ringkasan stok dan transaksi
+- Export laporan CSV
+- Role akses:
+  - `admin`
+  - `kasir`
+  - `viewer`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Teknologi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3
+- Laravel 13
+- Livewire 4
+- Laravel Breeze
+- Tailwind CSS
+- PhpSpreadsheet
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Hak Akses
 
-## Agentic Development
+- Guest:
+  - bisa melihat halaman `/products`
+- Viewer:
+  - bisa melihat dashboard, produk, dan laporan
+- Admin dan Kasir:
+  - bisa mengelola produk
+  - bisa import spreadsheet
+  - bisa input stok masuk dan stok keluar
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Halaman Penting
+
+- `/products` : katalog produk publik
+- `/dashboard` : dashboard internal
+- `/products/create` : tambah produk
+- `/products/import` : import spreadsheet
+- `/stock-in` : transaksi stok masuk
+- `/stock-out` : transaksi stok keluar
+- `/reports` : laporan
+
+## Instalasi
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/timbaliswara/batik-pos-app.git
+cd batik-pos-app
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+npm run build
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Lalu buka:
 
-## Contributing
+- `http://127.0.0.1:8000/products` untuk katalog publik
+- `http://127.0.0.1:8000/login` untuk masuk ke panel admin
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Akun Demo
 
-## Code of Conduct
+Setelah menjalankan seeder, akun demo yang tersedia:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `admin@batikpos.test` / `password`
+- `kasir@batikpos.test` / `password`
+- `viewer@batikpos.test` / `password`
 
-## Security Vulnerabilities
+## Seeder Demo
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Seeder demo akan membuat:
 
-## License
+- 100 produk dummy
+- campuran produk baju dan kain
+- stok awal per ukuran
+- data best seller
+- histori transaksi awal untuk simulasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Perintah reset data demo:
+
+```bash
+php artisan migrate:fresh --seed --force
+```
+
+## Format Import Spreadsheet
+
+Kolom utama:
+
+- `code`
+- `name`
+- `type`
+- `description`
+- `price`
+- `best_seller`
+- `low_stock_threshold`
+
+Kolom stok:
+
+- `stock_s`
+- `stock_m`
+- `stock_l`
+- `stock_xl`
+- `stock_xxl`
+- `stock_none`
+
+Contoh:
+
+```csv
+code,name,type,description,price,best_seller,low_stock_threshold,stock_s,stock_m,stock_l,stock_xl,stock_xxl,stock_none
+BTK-PRM-010,Batik Parang Baru,baju,Kemeja batik premium,325000,yes,3,5,8,7,4,2,0
+KAIN-MOT-020,Kain Batik Motif Baru,kain,Kain meteran untuk stock opname,175000,no,10,0,0,0,0,0,25
+```
+
+## Menjalankan Development
+
+Jalankan backend:
+
+```bash
+php artisan serve
+```
+
+Jalankan Vite saat development:
+
+```bash
+npm run dev
+```
+
+Atau gunakan script Composer:
+
+```bash
+composer run dev
+```
+
+## Testing
+
+Menjalankan test:
+
+```bash
+php artisan test
+```
+
+Build frontend:
+
+```bash
+npm run build
+```
+
+## Catatan Operasional
+
+- Daftar batch pada stok masuk dan stok keluar belum tersimpan ke database sebelum tombol `Simpan Semua` ditekan
+- Jika halaman di-refresh sebelum submit, daftar batch sementara akan hilang
+- Halaman login memakai tampilan khusus brand Baliswara
+
+## Repository
+
+Remote GitHub project ini:
+
+[https://github.com/timbaliswara/batik-pos-app](https://github.com/timbaliswara/batik-pos-app)

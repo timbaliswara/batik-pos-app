@@ -38,11 +38,48 @@ class ProductImportTest extends TestCase
         $updated = Product::query()->where('code', 'BTK-OLD-001')->firstOrFail();
         $created = Product::query()->where('code', 'KAIN-NEW-002')->firstOrFail();
 
-        $this->assertSame(['processed' => 2, 'created' => 1, 'updated' => 1], $result);
+        $this->assertSame(['processed' => 2, 'created' => 1, 'updated' => 1, 'deleted' => 0], $result);
         $this->assertSame('Produk Lama Update', $updated->name);
         $this->assertTrue($updated->best_seller);
         $this->assertSame(3, $updated->stocks()->where('size', 'S')->value('stock'));
         $this->assertSame(18, $created->stocks()->where('size', 'NONE')->value('stock'));
+    }
+
+    public function test_import_service_can_delete_products_missing_from_file_in_full_sync_mode(): void
+    {
+        Product::query()->create([
+            'code' => 'BTK-KEEP-001',
+            'name' => 'Produk Tetap',
+            'type' => Product::TYPE_CLOTHES,
+            'description' => 'Tetap ada',
+            'price' => 150000,
+            'best_seller' => true,
+            'low_stock_threshold' => 2,
+        ]);
+
+        Product::query()->create([
+            'code' => 'BTK-DELETE-002',
+            'name' => 'Produk Dummy',
+            'type' => Product::TYPE_CLOTHES,
+            'description' => 'Akan dihapus',
+            'price' => 99000,
+            'best_seller' => false,
+            'low_stock_threshold' => 2,
+        ]);
+
+        $csv = implode("\n", [
+            'code,name,type,description,price,best_seller,low_stock_threshold,stock_s,stock_m,stock_l,stock_xl,stock_xxl,stock_none',
+            'BTK-KEEP-001,Produk Tetap,baju,Masih dipakai,150000,yes,2,5,4,3,2,1,0',
+        ]);
+
+        $path = storage_path('app/private/test-import-sync.csv');
+        file_put_contents($path, $csv);
+
+        $result = app(ProductSpreadsheetImportService::class)->import($path, true);
+
+        $this->assertSame(['processed' => 1, 'created' => 0, 'updated' => 1, 'deleted' => 1], $result);
+        $this->assertDatabaseHas('products', ['code' => 'BTK-KEEP-001']);
+        $this->assertDatabaseMissing('products', ['code' => 'BTK-DELETE-002']);
     }
 
     public function test_viewer_cannot_access_import_page(): void

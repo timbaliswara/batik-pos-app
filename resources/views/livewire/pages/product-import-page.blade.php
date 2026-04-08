@@ -31,6 +31,20 @@
                     @error('spreadsheet') <p class="error">{{ $message }}</p> @enderror
                 </div>
 
+                <label class="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 text-sm text-amber-900">
+                    <input wire:model.live="deleteMissingProducts" type="checkbox" class="mt-1 h-4 w-4 rounded border-amber-300 text-slate-900 focus:ring-slate-900" />
+                    <span>
+                        <strong class="font-semibold">Sinkron penuh katalog</strong><br />
+                        Jika dicentang, produk yang tidak ada di spreadsheet akan ikut dihapus otomatis. Cocok saat mengganti data dummy dengan data real.
+                    </span>
+                </label>
+
+                @if ($deleteMissingProducts)
+                    <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                        Mode sinkron penuh aktif. Produk yang tidak ada di file akan dihapus, termasuk histori stok masuk/keluar yang menempel pada produk tersebut.
+                    </div>
+                @endif
+
                 <button type="submit" class="btn btn-primary">Proses Import</button>
             </form>
         </div>
@@ -43,13 +57,14 @@
                 <p><strong class="text-slate-900">Best seller:</strong> isi `yes/no`, `true/false`, atau `1/0`.</p>
                 <p><strong class="text-slate-900">Stok baju:</strong> isi kolom `stock_s`, `stock_m`, `stock_l`, `stock_xl`, `stock_xxl`.</p>
                 <p><strong class="text-slate-900">Stok kain:</strong> isi kolom `stock_none`.</p>
-                <p><strong class="text-slate-900">Perilaku import:</strong> jika `code` sudah ada, data produk akan diperbarui dan stok akan diset ulang sesuai angka di spreadsheet.</p>
+                <p><strong class="text-slate-900">Perilaku import biasa:</strong> jika `code` sudah ada, data produk akan diperbarui dan stok akan diset ulang sesuai angka di spreadsheet.</p>
+                <p><strong class="text-slate-900">Mode sinkron penuh:</strong> jika opsi sinkron penuh dicentang, produk yang tidak ada di file akan dihapus otomatis dari katalog.</p>
             </div>
 
             @if ($result)
                 <div class="mt-6 rounded-3xl border border-sky-200 bg-sky-50/80 p-4">
                     <h3 class="font-semibold text-sky-800">Hasil Import</h3>
-                    <div class="mt-3 grid gap-3 sm:grid-cols-3">
+                    <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                         <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-700">
                             <p class="text-slate-500">Diproses</p>
                             <p class="mt-1 text-2xl font-semibold text-slate-900">{{ $result['processed'] }}</p>
@@ -61,6 +76,10 @@
                         <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-700">
                             <p class="text-slate-500">Diperbarui</p>
                             <p class="mt-1 text-2xl font-semibold text-slate-900">{{ $result['updated'] }}</p>
+                        </div>
+                        <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-700">
+                            <p class="text-slate-500">Dihapus</p>
+                            <p class="mt-1 text-2xl font-semibold text-slate-900">{{ $result['deleted'] ?? 0 }}</p>
                         </div>
                     </div>
                 </div>

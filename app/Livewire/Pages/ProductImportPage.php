@@ -15,6 +15,8 @@ class ProductImportPage extends Component
     #[Validate('required|file|mimes:xlsx,xls,csv|max:5120')]
     public $spreadsheet;
 
+    public bool $deleteMissingProducts = false;
+
     public ?array $result = null;
 
     public function save(ProductSpreadsheetImportService $importService): void
@@ -26,9 +28,14 @@ class ProductImportPage extends Component
         try {
             $path = $this->spreadsheet->store('imports', 'local');
             $fullPath = storage_path('app/private/'.$path);
-            $this->result = $importService->import($fullPath);
+            $this->result = $importService->import($fullPath, $this->deleteMissingProducts);
             $this->reset('spreadsheet');
-            session()->flash('status', 'Import produk dan stock opname berhasil diproses.');
+            session()->flash(
+                'status',
+                $this->deleteMissingProducts
+                    ? 'Import sinkron penuh berhasil diproses. Produk yang tidak ada di file ikut dihapus.'
+                    : 'Import produk dan stock opname berhasil diproses.',
+            );
         } catch (Throwable $exception) {
             $this->addError('spreadsheet', $exception->getMessage());
         }

@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ProductSpreadsheetImportService
 {
-    public function import(string $path): array
+    public function import(string $path, bool $deleteMissingProducts = false): array
     {
         $rows = $this->rowsFromSpreadsheet($path);
 
@@ -18,13 +18,16 @@ class ProductSpreadsheetImportService
             throw new InvalidArgumentException('File import kosong atau tidak memiliki data.');
         }
 
-        $summary = DB::transaction(function () use ($rows) {
+        $summary = DB::transaction(function () use ($rows, $deleteMissingProducts) {
             $created = 0;
             $updated = 0;
+            $deleted = 0;
+            $importedCodes = [];
 
             foreach ($rows as $index => $row) {
                 $normalized = $this->normalizeRow($row, $index + 2);
                 $product = Product::query()->firstWhere('code', $normalized['code']) ?? new Product();
+                $importedCodes[] = $normalized['code'];
 
                 $isNew = ! $product->exists;
 
@@ -44,10 +47,17 @@ class ProductSpreadsheetImportService
                 $isNew ? $created++ : $updated++;
             }
 
+            if ($deleteMissingProducts) {
+                $deleted = Product::query()
+                    ->whereNotIn('code', $importedCodes)
+                    ->delete();
+            }
+
             return [
                 'processed' => count($rows),
                 'created' => $created,
                 'updated' => $updated,
+                'deleted' => $deleted,
             ];
         });
 

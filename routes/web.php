@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductImportTemplateController;
+use App\Http\Controllers\InvoiceDownloadController;
 use App\Http\Controllers\ReportExportController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
@@ -19,6 +20,8 @@ Route::middleware('auth')->group(function () {
         return view('product-form', ['productId' => $product->id]);
     })->middleware('role:admin,kasir')->name('products.edit');
     Route::view('/reports', 'reports')->name('reports');
+    Route::view('/invoice', 'invoice')->middleware('role:admin,kasir')->name('invoice');
+    Route::get('/invoice/download/{token}', InvoiceDownloadController::class)->middleware('role:admin,kasir')->name('invoice.download');
 
     Route::get('/reports/export/summary', [ReportExportController::class, 'stockSummary'])->name('reports.export.summary');
     Route::get('/reports/export/transactions/{direction}', [ReportExportController::class, 'transactions'])->name('reports.export.transactions');

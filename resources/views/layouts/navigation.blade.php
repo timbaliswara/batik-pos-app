@@ -9,6 +9,7 @@
     }
 
     if (auth()->user()?->canManageInventory()) {
+        $links[] = ['label' => 'Invoice', 'route' => 'invoice'];
         $links[] = ['label' => 'Stok Masuk', 'route' => 'stock-in'];
         $links[] = ['label' => 'Stok Keluar', 'route' => 'stock-out'];
     }

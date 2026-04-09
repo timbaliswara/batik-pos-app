@@ -13,7 +13,7 @@
         .header-table, .meta-table, .items-table, .totals-table { width: 100%; border-collapse: collapse; }
         .header-table td { vertical-align: top; }
         .brand-title { font-size: 24px; font-weight: 700; color: #111827; margin: 0 0 4px; }
-        .brand-subtitle { font-size: 11px; color: #6b7280; margin: 0; }
+        .brand-subtitle { font-size: 11px; color: #6b7280; margin: 0; line-height: 1.6; }
         .section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.6px; color: #9ca3af; margin-bottom: 8px; }
         .meta-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 14px; }
         .items-table th { background: #f8fafc; color: #475569; font-size: 11px; text-align: left; padding: 10px; border-bottom: 1px solid #e5e7eb; }
@@ -37,7 +37,11 @@
                 </td>
                 <td>
                     <p class="brand-title">Baliswara</p>
-                    <p class="brand-subtitle">Invoice penjualan langsung untuk customer</p>
+                    <div class="brand-subtitle">
+                        <div>No Hp Baliswara : 085601715496</div>
+                        <div>Shopee = shopee.com/batikbaliswara</div>
+                        <div>Tiktok = batikbaliswara</div>
+                    </div>
                 </td>
                 <td class="text-right">
                     <div class="section-title">Invoice</div>

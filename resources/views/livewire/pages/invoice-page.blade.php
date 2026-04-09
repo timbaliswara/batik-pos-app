@@ -4,7 +4,7 @@
 
 <div
     x-data="{}"
-    x-on:invoice-download-ready.window="if ($event.detail?.url) window.open($event.detail.url, '_blank')"
+    x-on:invoice-download-ready.window="if ($event.detail && $event.detail.url) { window.open($event.detail.url, '_blank') }"
     class="space-y-8 px-4 py-6 sm:px-6 lg:px-8"
 >
     <section class="hero-surface">

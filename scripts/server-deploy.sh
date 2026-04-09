@@ -35,4 +35,5 @@ sudo -u "$APP_USER" php artisan route:cache
 sudo -u "$APP_USER" php artisan view:cache
 sudo -u "$APP_USER" php artisan queue:restart || true
 
-sudo chown -R www-data:www-data "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
+sudo chown -R "$APP_USER":www-data "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
+sudo chmod -R ug+rwx "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"

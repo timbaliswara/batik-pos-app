@@ -191,7 +191,11 @@
                         </div>
 
                         @if ($canManageInventory)
-                            <div class="flex flex-col gap-2 border-t border-slate-100/90 pt-3 sm:flex-row sm:flex-wrap sm:pt-4">
+                            <div class="border-t border-slate-100/90 pt-3 sm:hidden">
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-secondary w-full justify-center text-xs">Edit</a>
+                            </div>
+
+                            <div class="hidden border-t border-slate-100/90 pt-4 sm:flex sm:flex-row sm:flex-wrap sm:gap-2">
                                 <button wire:click="toggleBestSeller({{ $product->id }})" type="button" class="btn btn-secondary w-full justify-center text-xs sm:w-auto sm:text-sm">
                                     {{ $product->best_seller ? 'Unmark Best Seller' : 'Mark Best Seller' }}
                                 </button>

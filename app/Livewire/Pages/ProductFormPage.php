@@ -90,6 +90,36 @@ class ProductFormPage extends Component
             ->with('status', $this->productId ? 'Produk berhasil diperbarui.' : 'Produk baru berhasil ditambahkan.');
     }
 
+    public function delete(): mixed
+    {
+        abort_unless(auth()->user()?->canManageInventory(), 403);
+        abort_if(! $this->productId, 404);
+
+        $product = Product::query()->with('stocks')->findOrFail($this->productId);
+
+        if ($product->stockIns()->exists() || $product->stockOuts()->exists()) {
+            return redirect()
+                ->route('products.edit', $product)
+                ->with('status', 'Produk dengan histori transaksi tidak dapat dihapus.');
+        }
+
+        if ($product->stocks->sum('stock') > 0) {
+            return redirect()
+                ->route('products.edit', $product)
+                ->with('status', 'Kosongkan stok produk terlebih dahulu sebelum menghapus.');
+        }
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        $product->delete();
+
+        return redirect()
+            ->route('products')
+            ->with('status', 'Produk berhasil dihapus.');
+    }
+
     public function render()
     {
         return view('livewire.pages.product-form-page');

@@ -11,6 +11,12 @@
     </section>
 
     <div class="panel mx-auto max-w-4xl">
+        @if (session('status'))
+            <div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <form wire:key="product-form-fields-{{ $productId ?? 'create' }}" wire:submit="save" class="space-y-5">
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
@@ -77,5 +83,17 @@
                 <button type="submit" class="btn btn-primary">{{ $productId ? 'Simpan Perubahan' : 'Tambah Produk' }}</button>
             </div>
         </form>
+
+        @if ($productId)
+            <div class="mt-6 rounded-3xl border border-rose-200 bg-rose-50/90 p-5">
+                <h3 class="text-base font-semibold text-rose-800">Aksi Produk</h3>
+                <p class="mt-2 text-sm leading-6 text-rose-700">
+                    Penanda best seller diatur dari form ini. Untuk menghapus produk, pastikan produk tidak punya histori transaksi dan stoknya sudah kosong.
+                </p>
+                <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                    <button wire:click="delete" type="button" class="btn btn-danger w-full justify-center sm:w-auto">Hapus Produk</button>
+                </div>
+            </div>
+        @endif
     </div>
 </div>

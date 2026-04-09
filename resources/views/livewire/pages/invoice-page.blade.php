@@ -2,10 +2,7 @@
     $formatRupiah = fn ($amount) => 'Rp '.number_format((float) $amount, 0, ',', '.');
 @endphp
 
-<div
-    x-data="{ sectionProduct: true, sectionCustomer: false, sectionSummary: true }"
-    class="space-y-8 px-4 py-6 pb-36 sm:px-6 sm:pb-6 lg:px-8"
->
+<div class="space-y-8 px-4 py-6 pb-36 sm:px-6 sm:pb-6 lg:px-8">
     <section class="hero-surface">
         <div class="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-2xl">
@@ -27,25 +24,12 @@
             <h2 class="text-lg font-semibold text-slate-900">Input Invoice</h2>
             <form wire:submit="processInvoice" class="mt-5 space-y-4 pb-24 sm:pb-0">
                 <section class="rounded-3xl border border-slate-200 bg-slate-50/90 p-4">
-                    <button
-                        type="button"
-                        @click="sectionProduct = ! sectionProduct"
-                        class="flex w-full items-center justify-between text-left sm:hidden"
-                    >
-                        <div>
-                            <h3 class="text-base font-semibold text-slate-900">Pilih Produk</h3>
-                            <p class="mt-1 text-xs text-slate-500">Cari produk, atur qty, lalu masukkan ke daftar.</p>
-                        </div>
-                        <svg class="h-5 w-5 text-slate-400 transition" :class="{ 'rotate-180': sectionProduct }" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div class="hidden sm:block">
+                    <div>
                         <h3 class="text-base font-semibold text-slate-900">Pilih Produk</h3>
-                        <p class="mt-1 text-sm text-slate-500">Cari produk, pilih ukuran, lalu masukkan ke daftar invoice.</p>
+                        <p class="mt-1 text-xs text-slate-500 sm:text-sm">Cari produk, pilih ukuran, lalu masukkan ke daftar invoice.</p>
                     </div>
 
-                    <div x-show="sectionProduct" class="mt-4 space-y-4">
+                    <div class="mt-4 space-y-4">
                         <div>
                             <label class="label">Pilih Produk</label>
                             <input wire:model.live.debounce.250ms="productSearch" type="text" class="input" placeholder="Ketik nama atau kode produk..." autocomplete="off" />
@@ -160,25 +144,12 @@
                 </div>
 
                 <section class="rounded-3xl border border-slate-200 bg-white p-4">
-                    <button
-                        type="button"
-                        @click="sectionCustomer = ! sectionCustomer"
-                        class="flex w-full items-center justify-between text-left sm:hidden"
-                    >
-                        <div>
-                            <h3 class="text-base font-semibold text-slate-900">Data Customer</h3>
-                            <p class="mt-1 text-xs text-slate-500">Isi nomor invoice, customer, dan catatan.</p>
-                        </div>
-                        <svg class="h-5 w-5 text-slate-400 transition" :class="{ 'rotate-180': sectionCustomer }" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div class="hidden sm:block">
+                    <div>
                         <h3 class="text-base font-semibold text-slate-900">Data Customer</h3>
-                        <p class="mt-1 text-sm text-slate-500">Lengkapi informasi invoice dan customer sebelum diproses.</p>
+                        <p class="mt-1 text-xs text-slate-500 sm:text-sm">Lengkapi informasi invoice dan customer sebelum diproses.</p>
                     </div>
 
-                    <div x-show="sectionCustomer" class="mt-4 space-y-4">
+                    <div class="mt-4 space-y-4">
                         <div class="grid gap-4 md:grid-cols-2">
                             <div>
                                 <label class="label">No Invoice</label>
@@ -227,21 +198,12 @@
                 </section>
 
                 <section class="rounded-3xl border border-slate-200 bg-white p-4 sm:hidden">
-                    <button
-                        type="button"
-                        @click="sectionSummary = ! sectionSummary"
-                        class="flex w-full items-center justify-between text-left"
-                    >
-                        <div>
-                            <h3 class="text-base font-semibold text-slate-900">Ringkasan</h3>
-                            <p class="mt-1 text-xs text-slate-500">{{ count($items) }} item • Total {{ $formatRupiah($grandTotal) }}</p>
-                        </div>
-                        <svg class="h-5 w-5 text-slate-400 transition" :class="{ 'rotate-180': sectionSummary }" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" />
-                        </svg>
-                    </button>
+                    <div>
+                        <h3 class="text-base font-semibold text-slate-900">Ringkasan</h3>
+                        <p class="mt-1 text-xs text-slate-500">{{ count($items) }} item • Total {{ $formatRupiah($grandTotal) }}</p>
+                    </div>
 
-                    <div x-show="sectionSummary" class="mt-4 space-y-3">
+                    <div class="mt-4 space-y-3">
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-slate-500">Subtotal</span>
                             <span class="font-medium text-slate-900">{{ $formatRupiah($subtotal) }}</span>

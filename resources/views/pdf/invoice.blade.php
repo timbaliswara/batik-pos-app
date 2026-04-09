@@ -1,5 +1,6 @@
 @php
     $formatRupiah = fn ($amount) => 'Rp '.number_format((float) $amount, 0, ',', '.');
+    $formattedInvoiceDate = \Illuminate\Support\Carbon::parse($invoice_date)->translatedFormat('d F Y');
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -41,7 +42,7 @@
                 <td class="text-right">
                     <div class="section-title">Invoice</div>
                     <div style="font-size: 18px; font-weight: 700; color: #111827;">{{ $invoice_number }}</div>
-                    <div class="muted" style="margin-top: 4px;">{{ $invoice_date->translatedFormat('d F Y') }}</div>
+                    <div class="muted" style="margin-top: 4px;">{{ $formattedInvoiceDate }}</div>
                 </td>
             </tr>
         </table>
@@ -101,8 +102,8 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>
-                            <div style="font-weight: 700; color: #111827;">{{ $item['name'] }}</div>
-                            <div class="muted" style="margin-top: 3px;">{{ $item['code'] }} • Ukuran {{ $item['size'] }}</div>
+                            <div style="font-weight: 700; color: #111827;">{{ $item['product_name'] }}</div>
+                            <div class="muted" style="margin-top: 3px;">{{ $item['product_code'] }} • Ukuran {{ $item['size'] }}</div>
                         </td>
                         <td class="text-right">{{ $item['quantity'] }}</td>
                         <td class="text-right">{{ $formatRupiah($item['unit_price']) }}</td>

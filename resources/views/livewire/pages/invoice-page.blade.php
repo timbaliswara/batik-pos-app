@@ -2,11 +2,7 @@
     $formatRupiah = fn ($amount) => 'Rp '.number_format((float) $amount, 0, ',', '.');
 @endphp
 
-<div
-    x-data="{}"
-    x-on:invoice-download-ready.window="if ($event.detail && $event.detail.url) { window.open($event.detail.url, '_blank') }"
-    class="space-y-8 px-4 py-6 sm:px-6 lg:px-8"
->
+<div class="space-y-8 px-4 py-6 sm:px-6 lg:px-8">
     <section class="hero-surface">
         <div class="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-2xl">
@@ -187,12 +183,6 @@
                 <div class="rounded-3xl border border-slate-200 bg-slate-50/90 p-4">
                     <p class="text-sm text-slate-500">No Invoice</p>
                     <p class="mt-1 text-lg font-semibold text-slate-900">{{ $invoice_number ?: '-' }}</p>
-                </div>
-
-                <div class="rounded-3xl border border-slate-200 bg-slate-50/90 p-4">
-                    <p class="text-sm text-slate-500">Customer</p>
-                    <p class="mt-1 text-base font-semibold text-slate-900">{{ $customer_name ?: 'Belum diisi' }}</p>
-                    <p class="mt-1 text-sm text-slate-500">{{ $customer_phone ?: 'Kontak belum diisi' }}</p>
                 </div>
 
                 <div class="rounded-3xl border border-slate-200 bg-white p-4">

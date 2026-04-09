@@ -179,11 +179,9 @@ class InvoicePage extends Component
         $token = (string) Str::uuid();
         Cache::put('invoice-download:'.$token, $pdfPayload, now()->addMinutes(10));
 
-        session()->flash('status', 'Invoice berhasil diproses dan stok otomatis berkurang.');
-        $this->dispatch('invoice-download-ready', url: route('invoice.download', ['token' => $token]));
         $this->resetInvoiceForm();
 
-        return null;
+        return redirect()->route('invoice.download', ['token' => $token]);
     }
 
     public function render()
@@ -244,7 +242,7 @@ class InvoicePage extends Component
 
         return [
             'invoice_number' => $validated['invoice_number'],
-            'invoice_date' => Carbon::parse($validated['invoice_date']),
+            'invoice_date' => Carbon::parse($validated['invoice_date'])->toDateString(),
             'customer_name' => $validated['customer_name'] ?: null,
             'customer_phone' => $validated['customer_phone'] ?: null,
             'customer_address' => $validated['customer_address'] ?: null,

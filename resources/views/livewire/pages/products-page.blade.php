@@ -64,8 +64,8 @@
                     <option value="best_seller">Best Seller + Abjad</option>
                 </select>
                 @if ($canManageInventory)
-                <a wire:navigate href="{{ route('products.import') }}" class="btn btn-secondary whitespace-nowrap">Import Spreadsheet</a>
-                <a wire:navigate href="{{ route('products.create') }}" class="btn btn-primary whitespace-nowrap">Tambah Produk</a>
+                <a href="{{ route('products.import') }}" class="btn btn-secondary whitespace-nowrap">Import Spreadsheet</a>
+                <a href="{{ route('products.create') }}" class="btn btn-primary whitespace-nowrap">Tambah Produk</a>
                 @endif
             </div>
         </div>

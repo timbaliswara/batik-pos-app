@@ -20,7 +20,7 @@
             <div class="relative mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl items-stretch overflow-hidden rounded-[36px] border border-white/70 bg-white/55 shadow-[0_30px_100px_-55px_rgba(15,23,42,0.35)] backdrop-blur-xl">
                 <section class="relative hidden w-full max-w-[46%] overflow-hidden bg-[linear-gradient(165deg,#5f524a_0%,#6f625a_38%,#f1f2f4_100%)] p-10 text-white lg:flex lg:flex-col lg:justify-between">
                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.22),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.18),transparent_28%)]"></div>
-                    <a wire:navigate href="/" class="relative inline-flex items-center gap-4 self-start">
+                    <a href="/" class="relative inline-flex items-center gap-4 self-start">
                         <x-application-logo class="h-16 w-16 rounded-[1.5rem] shadow-[0_18px_45px_rgba(29,29,31,0.22)]" />
                         <div>
                             <p class="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-white/70">Batik inventory</p>
@@ -59,7 +59,7 @@
                     <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(circle_at_top,rgba(191,219,254,0.45),transparent_56%)]"></div>
                     <div class="relative w-full max-w-md">
                         <div class="mb-8 flex items-center gap-4 lg:hidden">
-                            <a wire:navigate href="/" class="inline-flex items-center gap-3">
+                            <a href="/" class="inline-flex items-center gap-3">
                                 <x-application-logo class="h-14 w-14 rounded-[1.25rem] shadow-[0_18px_42px_rgba(29,29,31,0.16)]" />
                                 <div>
                                     <p class="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-slate-400">Batik inventory</p>

@@ -46,7 +46,7 @@
                     <div class="mb-2 flex items-center justify-between gap-4">
                         <x-input-label for="password" :value="__('Password')" class="mb-0" />
                         @if (Route::has('password.request'))
-                            <a wire:navigate href="{{ route('password.request') }}" class="text-sm font-medium text-slate-500 transition hover:text-slate-900">
+                            <a href="{{ route('password.request') }}" class="text-sm font-medium text-slate-500 transition hover:text-slate-900">
                                 {{ __('Forgot password?') }}
                             </a>
                         @endif

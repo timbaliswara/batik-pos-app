@@ -25,7 +25,7 @@
                     <h2 class="text-lg font-semibold text-slate-900">Snapshot Stok Produk</h2>
                     <p class="text-sm text-slate-500">Ringkasan stok per ukuran untuk produk terbaru.</p>
                 </div>
-                <a wire:navigate href="{{ route('products') }}" class="btn btn-secondary">Kelola Produk</a>
+                <a href="{{ route('products') }}" class="btn btn-secondary">Kelola Produk</a>
             </div>
 
             <div class="space-y-4">

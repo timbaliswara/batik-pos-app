@@ -30,7 +30,7 @@ class ProductFormPage extends Component
 
     public ?string $existingImage = null;
 
-    #[Validate('nullable|image|max:2048')]
+    #[Validate('nullable|image|max:4096')]
     public $image;
 
     public function mount(?int $productId = null): void
@@ -104,7 +104,7 @@ class ProductFormPage extends Component
             'description' => ['nullable', 'string'],
             'best_seller' => ['required', 'boolean'],
             'low_stock_threshold' => ['required', 'integer', 'min:0', 'max:9999'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:4096'],
         ];
     }
 }

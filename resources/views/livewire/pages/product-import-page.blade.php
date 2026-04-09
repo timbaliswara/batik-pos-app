@@ -8,7 +8,7 @@
             </div>
             <div class="flex gap-2">
                 <a href="{{ route('products.import.template') }}" class="btn btn-secondary">Unduh Template CSV</a>
-                <a wire:navigate href="{{ route('products') }}" class="btn btn-secondary">Kembali ke Produk</a>
+                <a href="{{ route('products') }}" class="btn btn-secondary">Kembali ke Produk</a>
             </div>
         </div>
     </section>

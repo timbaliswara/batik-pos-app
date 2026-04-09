@@ -23,6 +23,10 @@ class ProductsPage extends Component
 
     public ?string $pendingDeleteName = null;
 
+    public ?string $previewImage = null;
+
+    public ?string $previewName = null;
+
     public function toggleBestSeller(int $id): void
     {
         abort_unless(auth()->user()?->canManageInventory(), 403);
@@ -49,6 +53,18 @@ class ProductsPage extends Component
     {
         $this->pendingDeleteId = null;
         $this->pendingDeleteName = null;
+    }
+
+    public function previewImage(string $imageUrl, string $imageName): void
+    {
+        $this->previewImage = $imageUrl;
+        $this->previewName = $imageName;
+    }
+
+    public function closePreview(): void
+    {
+        $this->previewImage = null;
+        $this->previewName = null;
     }
 
     public function updatedSearch(): void

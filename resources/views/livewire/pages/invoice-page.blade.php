@@ -34,13 +34,13 @@
                         @endif
 
                         @if ($productResults->isNotEmpty() && ! $selectedProduct)
-                            <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                            <div class="search-result-list">
                                 @foreach ($productResults as $product)
                                     <button
-                                        wire:click="chooseProduct({{ $product->id }})"
+                                        wire:mousedown.prevent="chooseProduct({{ $product->id }})"
                                         type="button"
                                         @disabled((int) ($product->stocks_sum_stock ?? 0) <= 0)
-                                        class="flex w-full items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 text-left text-sm transition last:border-b-0 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400 disabled:opacity-100"
+                                        class="search-result-button disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400 disabled:opacity-100"
                                     >
                                         <span>
                                             <span class="block font-medium text-slate-800">{{ $product->name }}</span>
@@ -112,14 +112,14 @@
 
                     <div class="mt-4 space-y-3">
                         @forelse ($items as $index => $item)
-                            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-                                <div class="flex items-start justify-between gap-4">
+                            <div class="queue-item">
+                                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                     <div>
                                         <p class="font-medium text-slate-900">{{ $item['product_name'] }}</p>
                                         <p class="text-sm text-slate-500">{{ $item['product_code'] }} • {{ $item['size'] }} • Qty {{ $item['quantity'] }}</p>
                                         <p class="mt-1 text-sm text-slate-600">Harga {{ $formatRupiah($item['unit_price']) }} • Diskon {{ $formatRupiah($item['discount']) }} • Total {{ $formatRupiah($item['total']) }}</p>
                                     </div>
-                                    <button wire:click="removeItem({{ $index }})" type="button" class="btn btn-danger">Hapus</button>
+                                    <button wire:click="removeItem({{ $index }})" type="button" class="btn btn-danger w-full justify-center sm:w-auto">Hapus</button>
                                 </div>
                             </div>
                         @empty

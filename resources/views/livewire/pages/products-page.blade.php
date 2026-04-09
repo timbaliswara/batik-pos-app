@@ -95,50 +95,50 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div class="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 xl:grid-cols-3 2xl:grid-cols-4">
             @forelse ($products as $product)
                 <div @class([
-                    'soft-card relative flex h-full flex-col overflow-hidden transition duration-200',
+                    'soft-card relative flex h-full flex-col overflow-hidden p-3 transition duration-200 sm:p-5',
                     'border-[#d6c3b4] bg-[linear-gradient(180deg,rgba(255,251,247,0.98),rgba(250,244,238,0.94))] shadow-[0_20px_55px_-34px_rgba(111,85,63,0.18)]' => $product->best_seller,
                 ])>
-                    <div class="flex flex-1 flex-col gap-4">
-                        <div class="flex min-h-6 justify-end">
+                    <div class="flex flex-1 flex-col gap-3 sm:gap-4">
+                        <div class="flex min-h-5 justify-end sm:min-h-6">
                             @if ($product->best_seller)
-                                <div class="rounded-full bg-[#f3e6db] px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[#8b5e3c]">
+                                <div class="rounded-full bg-[#f3e6db] px-2 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.14em] text-[#8b5e3c] sm:px-2.5 sm:text-[0.58rem] sm:tracking-[0.16em]">
                                     Best Seller
                                 </div>
                             @endif
                         </div>
 
-                        <div class="flex items-start gap-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
                             @if ($product->image)
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-20 w-20 rounded-3xl object-cover shadow-[0_16px_30px_-24px_rgba(15,23,42,0.45)]" />
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-28 w-full rounded-[22px] object-cover shadow-[0_16px_30px_-24px_rgba(15,23,42,0.45)] sm:h-20 sm:w-20 sm:rounded-3xl" />
                             @else
                                 <div @class([
-                                    'flex h-20 w-20 flex-col items-center justify-center rounded-3xl border text-center',
+                                    'flex h-24 w-full flex-col items-center justify-center rounded-[22px] border text-center sm:h-20 sm:w-20 sm:rounded-3xl',
                                     'border-slate-200 bg-[linear-gradient(180deg,#f8fafc,#eef2f7)] text-slate-500' => ! $product->best_seller,
                                     'border-[#d8c2b3] bg-[linear-gradient(180deg,#fbf4ee,#f3e8df)] text-[#7a5a45]' => $product->best_seller,
                                 ])>
-                                    <svg class="h-6 w-6 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                    <svg class="h-5 w-5 opacity-70 sm:h-6 sm:w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M4 16.5V7.8A1.8 1.8 0 0 1 5.8 6h12.4A1.8 1.8 0 0 1 20 7.8v8.4M4 16.5l3.5-3.5a2 2 0 0 1 2.8 0l1.7 1.7m8-2.2-2-2a2 2 0 0 0-2.8 0l-3.2 3.2m-8 2.8h16M9 10h.01" />
                                     </svg>
-                                    <span class="mt-1 text-[0.6rem] font-medium uppercase tracking-[0.18em] opacity-75">No Image</span>
+                                    <span class="mt-1 text-[0.55rem] font-medium uppercase tracking-[0.16em] opacity-75 sm:text-[0.6rem] sm:tracking-[0.18em]">No Image</span>
                                 </div>
                             @endif
 
-                            <div>
+                            <div class="min-w-0">
                                 <div class="flex flex-wrap items-center gap-2">
                                     <h3 @class([
-                                        'text-lg font-semibold',
+                                        'line-clamp-2 text-sm font-semibold leading-5 sm:text-lg sm:leading-7',
                                         'text-slate-950' => ! $product->best_seller,
                                         'text-[#5d4638] tracking-[-0.01em]' => $product->best_seller,
                                     ])>{{ $product->name }}</h3>
-                                    <span class="badge">{{ ucfirst($product->type) }}</span>
+                                    <span class="badge px-2 py-0.5 text-[0.65rem] sm:px-3 sm:py-1 sm:text-xs">{{ ucfirst($product->type) }}</span>
                                 </div>
-                                <p class="mt-1 text-sm text-slate-500">{{ $product->code }}</p>
-                                <p class="mt-2 text-sm text-slate-500">{{ \Illuminate\Support\Str::limit($product->description, 120) }}</p>
+                                <p class="mt-1 text-xs text-slate-500 sm:text-sm">{{ $product->code }}</p>
+                                <p class="mt-2 hidden text-sm text-slate-500 sm:block">{{ \Illuminate\Support\Str::limit($product->description, 120) }}</p>
                                 <div @class([
-                                    'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium',
+                                    'mt-2 inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:mt-3 sm:px-3 sm:py-1.5 sm:text-sm',
                                     'bg-slate-100 text-slate-700' => ! $product->best_seller,
                                     'bg-[#efe2d6] text-[#7b573f]' => $product->best_seller,
                                 ])>
@@ -147,11 +147,11 @@
                             </div>
                         </div>
 
-                        <div class="mt-auto border-t border-slate-100/90 pt-4">
-                            <p class="mb-3 text-sm font-medium text-slate-700">Stok per ukuran</p>
-                            <div class="flex flex-wrap gap-2">
+                        <div class="mt-auto border-t border-slate-100/90 pt-3 sm:pt-4">
+                            <p class="mb-2 text-xs font-medium text-slate-700 sm:mb-3 sm:text-sm">Stok per ukuran</p>
+                            <div class="flex flex-wrap gap-1.5 sm:gap-2">
                                 @foreach ($product->stocks as $stock)
-                                    <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-700">
+                                    <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[0.7rem] text-slate-700 sm:px-3 sm:py-1.5 sm:text-sm">
                                         {{ $stock->size }}: <strong>{{ $stock->stock }}</strong>
                                     </span>
                                 @endforeach
@@ -159,12 +159,12 @@
                         </div>
 
                         @if ($canManageInventory)
-                            <div class="flex flex-wrap gap-2 border-t border-slate-100/90 pt-4">
-                                <button wire:click="toggleBestSeller({{ $product->id }})" type="button" class="btn btn-secondary w-full justify-center sm:w-auto">
+                            <div class="flex flex-col gap-2 border-t border-slate-100/90 pt-3 sm:flex-row sm:flex-wrap sm:pt-4">
+                                <button wire:click="toggleBestSeller({{ $product->id }})" type="button" class="btn btn-secondary w-full justify-center text-xs sm:w-auto sm:text-sm">
                                     {{ $product->best_seller ? 'Unmark Best Seller' : 'Mark Best Seller' }}
                                 </button>
-                                <a wire:navigate href="{{ route('products.edit', $product) }}" class="btn btn-secondary w-full justify-center sm:w-auto">Edit</a>
-                                <button wire:click="confirmDelete({{ $product->id }})" type="button" class="btn btn-danger w-full justify-center sm:w-auto">Hapus</button>
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-secondary w-full justify-center text-xs sm:w-auto sm:text-sm">Edit</a>
+                                <button wire:click="confirmDelete({{ $product->id }})" type="button" class="btn btn-danger w-full justify-center text-xs sm:w-auto sm:text-sm">Hapus</button>
                             </div>
                         @endif
                     </div>

@@ -1,4 +1,4 @@
-<div class="space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+<div wire:key="product-form-page-{{ $productId ?? 'create' }}" class="space-y-8 px-4 py-6 sm:px-6 lg:px-8">
     <section class="hero-surface">
         <div class="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-2xl">
@@ -6,12 +6,12 @@
                 <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ $productId ? 'Edit Produk Batik' : 'Tambah Produk Baru' }}</h1>
                 <p class="mt-3 text-sm leading-6 text-slate-500">Ruang kerja yang lebih fokus untuk mengatur detail produk, gambar, kategori, dan penanda best seller dengan tampilan yang lebih tenang.</p>
             </div>
-            <a wire:navigate href="{{ route('products') }}" class="btn btn-secondary">Kembali ke Daftar Produk</a>
+            <a href="{{ route('products') }}" class="btn btn-secondary">Kembali ke Daftar Produk</a>
         </div>
     </section>
 
     <div class="panel mx-auto max-w-4xl">
-        <form wire:submit="save" class="space-y-5">
+        <form wire:key="product-form-fields-{{ $productId ?? 'create' }}" wire:submit="save" class="space-y-5">
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
                     <label class="label">Kode Batik</label>
@@ -73,7 +73,7 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a wire:navigate href="{{ route('products') }}" class="btn btn-secondary">Batal</a>
+                <a href="{{ route('products') }}" class="btn btn-secondary">Batal</a>
                 <button type="submit" class="btn btn-primary">{{ $productId ? 'Simpan Perubahan' : 'Tambah Produk' }}</button>
             </div>
         </form>

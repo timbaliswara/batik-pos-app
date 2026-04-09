@@ -24,9 +24,9 @@
                             <p class="mt-2 text-sm text-slate-500">Produk tidak ditemukan.</p>
                         @endif
                         @if ($productResults->isNotEmpty() && ! $selectedProduct)
-                            <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                            <div class="search-result-list">
                                 @foreach ($productResults as $product)
-                                    <button wire:click="chooseProduct({{ $product->id }})" type="button" class="flex w-full items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 text-left text-sm transition hover:bg-slate-50 last:border-b-0">
+                                    <button wire:mousedown.prevent="chooseProduct({{ $product->id }})" type="button" class="search-result-button hover:bg-slate-50">
                                         <span class="font-medium text-slate-800">{{ $product->name }}</span>
                                         <span class="text-slate-500">{{ $product->code }}</span>
                                     </button>
@@ -70,12 +70,12 @@
 
                     <div class="mt-4 space-y-3">
                         @forelse ($items as $index => $item)
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                            <div class="queue-item flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <p class="font-medium text-slate-900">{{ $item['product_name'] }}</p>
                                     <p class="text-sm text-slate-500">{{ $item['product_code'] }} • {{ $item['size'] }} • Qty {{ $item['quantity'] }}</p>
                                 </div>
-                                <button wire:click="removeItem({{ $index }})" type="button" class="btn btn-danger">Hapus</button>
+                                <button wire:click="removeItem({{ $index }})" type="button" class="btn btn-danger w-full justify-center sm:w-auto">Hapus</button>
                             </div>
                         @empty
                             <p class="text-sm text-slate-500">Belum ada item yang ditambahkan.</p>

@@ -93,4 +93,40 @@
     .badge-danger {
         @apply border-rose-200 bg-rose-50 text-rose-700;
     }
+
+    .search-result-list {
+        @apply relative z-20 mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .search-result-button {
+        @apply flex w-full items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 text-left text-sm transition last:border-b-0;
+        touch-action: manipulation;
+    }
+
+    .queue-item {
+        @apply rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3;
+    }
+}
+
+@media (max-width: 640px) {
+    @layer components {
+        .hero-surface {
+            @apply rounded-[28px] p-5;
+        }
+
+        .panel {
+            @apply rounded-[24px] p-4;
+        }
+
+        .soft-card,
+        .stat-card {
+            @apply rounded-[24px] p-4;
+        }
+
+        .search-result-list {
+            max-height: 18rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
 }

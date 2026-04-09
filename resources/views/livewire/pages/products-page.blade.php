@@ -1,4 +1,35 @@
-<div class="space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+<div
+    x-data="{ previewImage: null, previewName: '' }"
+    @keydown.escape.window="previewImage = null; previewName = ''"
+    class="space-y-8 px-4 py-6 sm:px-6 lg:px-8"
+>
+    <div
+        x-cloak
+        x-show="previewImage"
+        x-transition.opacity
+        @click.self="previewImage = null; previewName = ''"
+        class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/80 px-4 py-8 backdrop-blur-sm"
+    >
+        <div class="relative w-full max-w-4xl">
+            <button
+                type="button"
+                @click="previewImage = null; previewName = ''"
+                class="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/70 text-white shadow-lg transition hover:bg-slate-950"
+                aria-label="Tutup preview gambar"
+            >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            </button>
+
+            <div class="overflow-hidden rounded-[28px] border border-white/10 bg-white shadow-2xl">
+                <img :src="previewImage" :alt="previewName" class="max-h-[78vh] w-full object-contain bg-[#f5f5f7]" />
+            </div>
+
+            <p x-show="previewName" x-text="previewName" class="mt-3 text-center text-sm font-medium text-white/90"></p>
+        </div>
+    </div>
+
     @if ($pendingDeleteId)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 px-4 backdrop-blur-sm">
             <div class="w-full max-w-md rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl">
@@ -112,7 +143,14 @@
 
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
                             @if ($product->image)
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-28 w-full rounded-[22px] object-cover shadow-[0_16px_30px_-24px_rgba(15,23,42,0.45)] sm:h-20 sm:w-20 sm:rounded-3xl" />
+                                <button
+                                    type="button"
+                                    @click="previewImage = '{{ \Illuminate\Support\Facades\Storage::url($product->image) }}'; previewName = @js($product->name)"
+                                    class="block overflow-hidden rounded-[22px] text-left transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-slate-300 sm:rounded-3xl"
+                                    aria-label="Perbesar gambar {{ $product->name }}"
+                                >
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-28 w-full object-cover shadow-[0_16px_30px_-24px_rgba(15,23,42,0.45)] sm:h-20 sm:w-20" />
+                                </button>
                             @else
                                 <div @class([
                                     'flex h-24 w-full flex-col items-center justify-center rounded-[22px] border text-center sm:h-20 sm:w-20 sm:rounded-3xl',

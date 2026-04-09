@@ -36,7 +36,6 @@ class ProductSpreadsheetImportService
                     'name' => $normalized['name'],
                     'type' => $normalized['type'],
                     'description' => $normalized['description'],
-                    'price' => $normalized['price'],
                     'best_seller' => $normalized['best_seller'],
                     'low_stock_threshold' => $normalized['low_stock_threshold'],
                 ]);
@@ -131,7 +130,6 @@ class ProductSpreadsheetImportService
             'name' => $name,
             'type' => $type,
             'description' => trim((string) ($row['description'] ?? '')) ?: null,
-            'price' => $this->toFloat($row['price'] ?? 0, $rowNumber, 'price'),
             'best_seller' => $this->toBoolean($row['best_seller'] ?? false),
             'low_stock_threshold' => $this->toInteger($row['low_stock_threshold'] ?? 5, $rowNumber, 'low_stock_threshold'),
             'stocks' => $type === Product::TYPE_CLOTHES

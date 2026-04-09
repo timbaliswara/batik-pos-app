@@ -135,7 +135,7 @@
                                     ])>{{ $product->name }}</h3>
                                     <span class="badge">{{ ucfirst($product->type) }}</span>
                                 </div>
-                                <p class="mt-1 text-sm text-slate-500">{{ $product->code }} • Rp {{ number_format((float) $product->price, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-sm text-slate-500">{{ $product->code }}</p>
                                 <p class="mt-2 text-sm text-slate-500">{{ \Illuminate\Support\Str::limit($product->description, 120) }}</p>
                                 <div @class([
                                     'mt-3 inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium',

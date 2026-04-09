@@ -56,7 +56,6 @@ class InvoicePage extends Component
         $product = Product::query()->find($value);
         $this->size = $product?->availableSizes()[0] ?? '';
         $this->productSearch = $product ? $this->productLabel($product) : $this->productSearch;
-        $this->unit_price = $product ? (string) ((float) $product->price) : $this->unit_price;
     }
 
     public function updatedProductSearch(string $value): void
@@ -77,7 +76,6 @@ class InvoicePage extends Component
         $this->product_id = (string) $product->id;
         $this->productSearch = $this->productLabel($product);
         $this->size = $product->availableSizes()[0] ?? '';
-        $this->unit_price = (string) ((float) $product->price);
     }
 
     public function addItem(): void
@@ -191,7 +189,7 @@ class InvoicePage extends Component
         $productResults = $this->productSearch === ''
             ? collect()
             : Product::query()
-                ->select('id', 'code', 'name', 'price')
+                ->select('id', 'code', 'name')
                 ->withSum('stocks', 'stock')
                 ->where(function ($query) {
                     $query

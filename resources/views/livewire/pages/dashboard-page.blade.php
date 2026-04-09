@@ -35,7 +35,7 @@
                             <div>
                                 <p class="text-xs uppercase tracking-[0.24em] text-slate-400">{{ $product->code }}</p>
                                 <h3 class="mt-1 text-base font-semibold text-slate-900">{{ $product->name }}</h3>
-                                <p class="mt-1 text-sm text-slate-500">Tipe {{ ucfirst($product->type) }} • Rp {{ number_format((float) $product->price, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-sm text-slate-500">Tipe {{ ucfirst($product->type) }}</p>
                             </div>
                             <span class="badge">{{ ucfirst($product->type) }}</span>
                         </div>

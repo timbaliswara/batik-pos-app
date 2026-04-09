@@ -4,7 +4,7 @@
             <div class="max-w-2xl">
                 <p class="text-xs uppercase tracking-[0.32em] text-slate-400">Product Studio</p>
                 <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ $productId ? 'Edit Produk Batik' : 'Tambah Produk Baru' }}</h1>
-                <p class="mt-3 text-sm leading-6 text-slate-500">Ruang kerja yang lebih fokus untuk mengatur detail produk, harga, gambar, kategori, dan penanda best seller dengan tampilan yang lebih tenang.</p>
+                <p class="mt-3 text-sm leading-6 text-slate-500">Ruang kerja yang lebih fokus untuk mengatur detail produk, gambar, kategori, dan penanda best seller dengan tampilan yang lebih tenang.</p>
             </div>
             <a wire:navigate href="{{ route('products') }}" class="btn btn-secondary">Kembali ke Daftar Produk</a>
         </div>
@@ -35,18 +35,13 @@
                     @error('type') <p class="error">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label class="label">Harga Jual</label>
-                    <input wire:model="price" type="number" min="0" step="0.01" class="input" />
-                    @error('price') <p class="error">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
-            <div class="grid gap-4 md:grid-cols-2">
-                <div>
                     <label class="label">Threshold Low Stock</label>
                     <input wire:model="low_stock_threshold" type="number" min="0" class="input" />
                     @error('low_stock_threshold') <p class="error">{{ $message }}</p> @enderror
                 </div>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
                 <div>
                     <label class="label">Gambar Produk</label>
                     <input wire:model="image" type="file" class="input file:mr-4 file:rounded-full file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white" />

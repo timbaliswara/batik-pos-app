@@ -24,8 +24,6 @@ class ProductFormPage extends Component
 
     public string $description = '';
 
-    public string $price = '0';
-
     public string $low_stock_threshold = '5';
 
     public bool $best_seller = false;
@@ -50,7 +48,6 @@ class ProductFormPage extends Component
         $this->name = $product->name;
         $this->type = $product->type;
         $this->description = $product->description ?? '';
-        $this->price = (string) $product->price;
         $this->low_stock_threshold = (string) $product->low_stock_threshold;
         $this->best_seller = $product->best_seller;
         $this->existingImage = $product->image;
@@ -105,7 +102,6 @@ class ProductFormPage extends Component
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', Rule::in([Product::TYPE_CLOTHES, Product::TYPE_FABRIC])],
             'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
             'best_seller' => ['required', 'boolean'],
             'low_stock_threshold' => ['required', 'integer', 'min:0', 'max:9999'],
             'image' => ['nullable', 'image', 'max:2048'],

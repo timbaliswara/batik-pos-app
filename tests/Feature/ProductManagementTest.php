@@ -25,7 +25,6 @@ class ProductManagementTest extends TestCase
             'name' => 'Batik Lama',
             'type' => Product::TYPE_CLOTHES,
             'description' => 'Deskripsi lama',
-            'price' => 150000,
             'low_stock_threshold' => 5,
         ]);
 
@@ -33,14 +32,12 @@ class ProductManagementTest extends TestCase
             ->test(ProductFormPage::class, ['productId' => $product->id])
             ->assertSet('productId', $product->id)
             ->set('name', 'Batik Baru')
-            ->set('price', '175000')
             ->call('save')
             ->assertHasNoErrors();
 
         $product->refresh();
 
         $this->assertSame('Batik Baru', $product->name);
-        $this->assertSame(175000.0, (float) $product->price);
     }
 
     public function test_cashier_must_confirm_before_deleting_product(): void

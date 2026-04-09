@@ -53,7 +53,7 @@ class ProductFormPage extends Component
         $this->existingImage = $product->image;
     }
 
-    public function save(InventoryService $inventoryService): void
+    public function save(InventoryService $inventoryService)
     {
         $validated = $this->validate($this->rules());
 
@@ -85,9 +85,9 @@ class ProductFormPage extends Component
 
         $inventoryService->syncProductStocks($product);
 
-        session()->flash('status', $this->productId ? 'Produk berhasil diperbarui.' : 'Produk baru berhasil ditambahkan.');
-
-        $this->redirectRoute('products', navigate: true);
+        return redirect()
+            ->route('products')
+            ->with('status', $this->productId ? 'Produk berhasil diperbarui.' : 'Produk baru berhasil ditambahkan.');
     }
 
     public function render()

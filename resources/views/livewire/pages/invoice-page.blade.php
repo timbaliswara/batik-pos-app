@@ -4,7 +4,7 @@
 
 <div
     x-data="{ sectionProduct: true, sectionCustomer: false, sectionSummary: true }"
-    class="space-y-8 px-4 py-6 pb-28 sm:px-6 sm:pb-6 lg:px-8"
+    class="space-y-8 px-4 py-6 pb-36 sm:px-6 sm:pb-6 lg:px-8"
 >
     <section class="hero-surface">
         <div class="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -25,7 +25,7 @@
     <div class="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
         <div class="panel">
             <h2 class="text-lg font-semibold text-slate-900">Input Invoice</h2>
-            <form wire:submit="processInvoice" class="mt-5 space-y-4">
+            <form wire:submit="processInvoice" class="mt-5 space-y-4 pb-24 sm:pb-0">
                 <section class="rounded-3xl border border-slate-200 bg-slate-50/90 p-4">
                     <button
                         type="button"
@@ -265,7 +265,7 @@
 
                 <button type="submit" class="hidden w-full sm:inline-flex btn btn-primary">Proses Invoice & Download PDF</button>
 
-                <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-18px_45px_-28px_rgba(15,23,42,0.28)] backdrop-blur sm:hidden">
+                <div class="fixed inset-x-3 bottom-3 z-[80] rounded-[24px] border border-slate-200 bg-white/96 px-4 py-3 shadow-[0_20px_60px_-28px_rgba(15,23,42,0.32)] backdrop-blur sm:hidden">
                     <div class="mx-auto flex max-w-xl items-center justify-between gap-3">
                         <div class="min-w-0">
                             <p class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-slate-400">Grand Total</p>

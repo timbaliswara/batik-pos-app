@@ -1,6 +1,7 @@
 @php
     $links = [
         ['label' => 'Produk', 'route' => 'products'],
+        ['label' => 'Daftar Stok', 'route' => 'stock-directory'],
     ];
 
     if (auth()->check()) {

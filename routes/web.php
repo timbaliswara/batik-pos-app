@@ -4,12 +4,15 @@ use App\Http\Controllers\ProductImportTemplateController;
 use App\Http\Controllers\InvoiceDownloadController;
 use App\Http\Controllers\ReportExportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockDirectoryController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
 
 Route::view('/products', 'products')->name('products');
+Route::get('/stock-directory', [StockDirectoryController::class, 'index'])->name('stock-directory');
+Route::get('/stock-directory/pdf', [StockDirectoryController::class, 'pdf'])->name('stock-directory.pdf');
 
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');

@@ -80,7 +80,7 @@
                     @foreach ($manualStocks as $size => $stock)
                         <div>
                             <label class="label">Stok {{ $size === 'NONE' ? 'Kain' : $size }}</label>
-                            <input wire:model="manualStocks.{{ $size }}" type="number" min="0" class="input" />
+                            <input wire:model.blur="manualStocks.{{ $size }}" type="number" min="0" class="input" />
                             @error('manualStocks.'.$size) <p class="error">{{ $message }}</p> @enderror
                         </div>
                     @endforeach

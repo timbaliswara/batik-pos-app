@@ -66,6 +66,27 @@
                 @error('best_seller') <p class="error">{{ $message }}</p> @enderror
             </div>
 
+            <div class="rounded-3xl border border-slate-200 bg-white p-5">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <h3 class="text-base font-semibold text-slate-900">Edit Stok Manual</h3>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Ubah stok langsung per ukuran. Nilai ini akan menjadi stok terbaru produk setelah disimpan.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($manualStocks as $size => $stock)
+                        <div>
+                            <label class="label">Stok {{ $size === 'NONE' ? 'Kain' : $size }}</label>
+                            <input wire:model="manualStocks.{{ $size }}" type="number" min="0" class="input" />
+                            @error('manualStocks.'.$size) <p class="error">{{ $message }}</p> @enderror
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
             @if ($image)
                 <img src="{{ $image->temporaryUrl() }}" alt="Preview produk" class="h-48 w-full rounded-3xl object-cover" />
             @elseif ($existingImage)

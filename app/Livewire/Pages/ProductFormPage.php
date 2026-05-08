@@ -30,6 +30,8 @@ class ProductFormPage extends Component
 
     public ?string $existingImage = null;
 
+    public array $manualStocks = [];
+
     #[Validate('nullable|image|max:4096')]
     public $image;
 
@@ -38,10 +40,12 @@ class ProductFormPage extends Component
         abort_unless(auth()->user()?->canManageInventory(), 403);
 
         if (! $productId) {
+            $this->syncManualStocks();
+
             return;
         }
 
-        $product = Product::query()->findOrFail($productId);
+        $product = Product::query()->with('stocks')->findOrFail($productId);
 
         $this->productId = $product->id;
         $this->code = $product->code;
@@ -51,6 +55,7 @@ class ProductFormPage extends Component
         $this->low_stock_threshold = (string) $product->low_stock_threshold;
         $this->best_seller = $product->best_seller;
         $this->existingImage = $product->image;
+        $this->syncManualStocks($product);
     }
 
     public function save(InventoryService $inventoryService)
@@ -84,10 +89,16 @@ class ProductFormPage extends Component
         $product->save();
 
         $inventoryService->syncProductStocks($product);
+        $this->persistManualStocks($product);
 
         return redirect()
             ->route('products')
             ->with('status', $this->productId ? 'Produk berhasil diperbarui.' : 'Produk baru berhasil ditambahkan.');
+    }
+
+    public function updatedType(): void
+    {
+        $this->syncManualStocks();
     }
 
     public function delete(): mixed
@@ -127,6 +138,12 @@ class ProductFormPage extends Component
 
     protected function rules(): array
     {
+        $stockRules = [];
+
+        foreach ($this->availableSizes() as $size) {
+            $stockRules["manualStocks.{$size}"] = ['required', 'integer', 'min:0', 'max:999999'];
+        }
+
         return [
             'code' => ['required', 'string', 'max:50', Rule::unique('products', 'code')->ignore($this->productId)],
             'name' => ['required', 'string', 'max:255'],
@@ -135,6 +152,51 @@ class ProductFormPage extends Component
             'best_seller' => ['required', 'boolean'],
             'low_stock_threshold' => ['required', 'integer', 'min:0', 'max:9999'],
             'image' => ['nullable', 'image', 'max:4096'],
-        ];
+        ] + $stockRules;
+    }
+
+    protected function availableSizes(): array
+    {
+        return $this->type === Product::TYPE_CLOTHES
+            ? Product::CLOTHING_SIZES
+            : Product::FABRIC_SIZES;
+    }
+
+    protected function syncManualStocks(?Product $product = null): void
+    {
+        $product ??= $this->productId
+            ? Product::query()->with('stocks')->find($this->productId)
+            : null;
+
+        $currentStocks = $product?->stocks
+            ? $product->stocks->pluck('stock', 'size')->map(fn ($stock) => (string) $stock)->all()
+            : [];
+
+        $manualStocks = [];
+
+        foreach ($this->availableSizes() as $size) {
+            $manualStocks[$size] = $this->manualStocks[$size]
+                ?? $currentStocks[$size]
+                ?? '0';
+        }
+
+        $this->manualStocks = $manualStocks;
+    }
+
+    protected function persistManualStocks(Product $product): void
+    {
+        $freshProduct = $product->fresh('stocks');
+
+        foreach ($freshProduct->availableSizes() as $size) {
+            $stockRow = $freshProduct->stocks->firstWhere('size', $size);
+
+            if (! $stockRow) {
+                continue;
+            }
+
+            $stockRow->update([
+                'stock' => (int) ($this->manualStocks[$size] ?? 0),
+            ]);
+        }
     }
 }

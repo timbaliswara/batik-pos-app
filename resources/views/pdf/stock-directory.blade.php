@@ -15,6 +15,7 @@
         .best-seller { background: #fbbf24; color: #111827; font-weight: 700; }
         .row-best-seller td { background: #fef3c7; }
         .muted { color: #6b7280; }
+        .zero-stock { color: #dc2626; font-size: 15px; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -53,13 +54,13 @@
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ ucfirst($product->type) }}</td>
-                    <td class="center">{{ $stocks->get('S', '-') }}</td>
-                    <td class="center">{{ $stocks->get('M', '-') }}</td>
-                    <td class="center">{{ $stocks->get('L', '-') }}</td>
-                    <td class="center">{{ $stocks->get('XL', '-') }}</td>
-                    <td class="center">{{ $stocks->get('XXL', '-') }}</td>
-                    <td class="center">{{ $stocks->get('NONE', '-') }}</td>
-                    <td class="center">{{ (int) $product->stocks_sum_stock }}</td>
+                    @foreach (['S', 'M', 'L', 'XL', 'XXL', 'NONE'] as $size)
+                        @php
+                            $stockValue = $stocks->get($size);
+                        @endphp
+                        <td class="center {{ $stockValue === 0 ? 'zero-stock' : '' }}">{{ $stockValue ?? '-' }}</td>
+                    @endforeach
+                    <td class="center {{ (int) $product->stocks_sum_stock === 0 ? 'zero-stock' : '' }}">{{ (int) $product->stocks_sum_stock }}</td>
                 </tr>
             @empty
                 <tr>

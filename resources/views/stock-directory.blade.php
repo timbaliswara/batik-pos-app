@@ -52,13 +52,23 @@
                                 <td class="px-4 py-3 font-medium text-slate-700">{{ $product->code }}</td>
                                 <td class="px-4 py-3 font-semibold text-slate-900">{{ $product->name }}</td>
                                 <td class="px-4 py-3 text-slate-600">{{ ucfirst($product->type) }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('S', '-') }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('M', '-') }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('L', '-') }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('XL', '-') }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('XXL', '-') }}</td>
-                                <td class="px-4 py-3 text-center text-slate-700">{{ $stocks->get('NONE', '-') }}</td>
-                                <td class="px-4 py-3 text-center font-semibold text-slate-950">{{ (int) $product->stocks_sum_stock }}</td>
+                                @foreach (['S', 'M', 'L', 'XL', 'XXL', 'NONE'] as $size)
+                                    @php
+                                        $stockValue = $stocks->get($size);
+                                    @endphp
+                                    <td @class([
+                                        'px-4 py-3 text-center',
+                                        'text-slate-700' => $stockValue !== 0,
+                                        'text-lg font-extrabold text-red-600' => $stockValue === 0,
+                                    ])>
+                                        {{ $stockValue ?? '-' }}
+                                    </td>
+                                @endforeach
+                                <td @class([
+                                    'px-4 py-3 text-center font-semibold',
+                                    'text-slate-950' => (int) $product->stocks_sum_stock !== 0,
+                                    'text-lg font-extrabold text-red-600' => (int) $product->stocks_sum_stock === 0,
+                                ])>{{ (int) $product->stocks_sum_stock }}</td>
                             </tr>
                         @empty
                             <tr>
